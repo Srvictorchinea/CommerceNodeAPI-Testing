@@ -3,5 +3,21 @@ const express = require('express')
 const pino = require("pino-http")()
 const app = express()
 app.use(pino)
-module.exports = app
+app.use(express.json())
 //endpoints
+const router = express.Router()
+const users = []
+
+router.post('/users', (req, res) => {
+    const {name, address, age} = req.body
+    users.push({name, address, age})
+    return res.status(201).send(users)
+})
+
+router.get('/users', (req, res) => {
+    return res.status(200).send(users)
+})
+
+app.use(router)
+
+module.exports = app
