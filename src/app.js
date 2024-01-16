@@ -19,15 +19,15 @@ router.get('/users', (req, res) => {
 })
 
 router.get('/users/:uid', (req, res) => {
-    const {uid} = req.params
+    const { uid } = req.params
     const user = users.find(({uid: userUid}) => userUid === uid)
 
     return res.status(200).send(user)
 })
 
 router.put('/users/:uid', (req, res) => {
-    const {name, address, age} = req.body
-    const {uid} = req.params
+    const { name, address, age } = req.body
+    const { uid } = req.params
 
     const usersUpdate = users.map((user) => {
         if (user.uid === uid) {
@@ -41,10 +41,10 @@ router.put('/users/:uid', (req, res) => {
 
 
 router.delete('/users/:uid', (req, res) => {
-    const {uid} = req.params
-    const user = users.filter(({uid: userUid}) => userUid === uid)
+    const { uid } = req.params
+    const usersUpdate = users.filter(({uid: userUid}) => userUid !== uid)
 
-    return res.status(200).send(user)
+    return res.status(200).send(usersUpdate)
 })
 
 
