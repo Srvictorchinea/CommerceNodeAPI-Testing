@@ -11,4 +11,13 @@ describe('users', () => {
     
         expect(result.body).toEqual({ message: 'success' })
     })   
+
+    it('should get all users', async () => {
+        const result = await request(app)
+          .get('/users')
+          .expect(200)
+    
+        expect(result.body).toEqual([])
+    }) 
 })
+

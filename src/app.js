@@ -4,23 +4,25 @@ const pino = require("pino-http")()
 const app = express()
 app.use(pino)
 app.use(express.json())
+//data/users
+const {getUsers, addUsers, findUserByUid, updateUserByUid, removeUserByUid} = require('./data/user')
 //endpoints
 const router = express.Router()
 const users = []
 
 router.post('/users', (req, res) => {
     const {name, address, age, uid} = req.body
-    users.push({name, address, age, uid})
+    addUsers({name, address, age, uid})
     return res.status(201).send({ message: 'success' })
 })
 
 router.get('/users', (req, res) => {
-    return res.status(200).send(users)
+    return res.status(200).send(getUsers)
 })
 
 router.get('/users/:uid', (req, res) => {
     const { uid } = req.params
-    const user = users.find(({uid: userUid}) => userUid === uid)
+    const user = findUserByUid({ uid })
 
     return res.status(200).send(user)
 })
@@ -29,20 +31,15 @@ router.put('/users/:uid', (req, res) => {
     const { name, address, age } = req.body
     const { uid } = req.params
 
-    const usersUpdate = users.map((user) => {
-        if (user.uid === uid) {
-            return { ...user, name, address, age }
-        }
+    const usersUpdate = updateUserByUid({ uid, name, address, age})
 
-        return user
-    })
     return res.status(200).send(usersUpdate)
 })
 
 
 router.delete('/users/:uid', (req, res) => {
     const { uid } = req.params
-    const usersUpdate = users.filter(({uid: userUid}) => userUid !== uid)
+    const usersUpdate = removeUserByUid({ uid })
 
     return res.status(200).send(usersUpdate)
 })
