@@ -5,10 +5,15 @@ const app = express()
 app.use(pino)
 app.use(express.json())
 //data/users
-const {getUsers, addUsers, findUserByUid, updateUserByUid, removeUserByUid} = require('./data/user')
+const { 
+    getUsers, 
+    addUsers, 
+    findUserByUid, 
+    updateUserByUid, 
+    removeUserByUid
+} = require('./data/user')
 //endpoints
 const router = express.Router()
-const users = []
 
 router.post('/users', (req, res) => {
     const {name, address, age, uid} = req.body
@@ -17,7 +22,7 @@ router.post('/users', (req, res) => {
 })
 
 router.get('/users', (req, res) => {
-    return res.status(200).send(getUsers)
+    return res.status(200).send(getUsers())
 })
 
 router.get('/users/:uid', (req, res) => {
@@ -43,7 +48,6 @@ router.delete('/users/:uid', (req, res) => {
 
     return res.status(200).send(usersUpdate)
 })
-
 
 app.use(router)
 
